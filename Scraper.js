@@ -5,7 +5,7 @@ import {Parser as json2Csv} from "json2csv";
 import csvP from "csv-parser";
 
 // Pure functions:
-const scrapeFromWebsite = async (uri, headers={}, contentType="json") => {
+const scrapeWebsite = async (uri, headers={}, contentType="json") => {
     const response = await request(
         {
             uri: uri,
@@ -15,7 +15,7 @@ const scrapeFromWebsite = async (uri, headers={}, contentType="json") => {
         return response;
 }
 
-const getHTMLFromScrape = (response) => {
+const scrape2Html = (response) => {
     let $ = cheerio.load(response);
     return $;
 }
@@ -35,4 +35,4 @@ const readFromCSVFile = (file) => {
         .on("data", data => console.log(data))
 }
 
-export { scrapeFromWebsite, getHTMLFromScrape, writeInCSVFile, readFromCSVFile }
+export { scrapeWebsite, scrape2Html, writeInCSVFile, readFromCSVFile }

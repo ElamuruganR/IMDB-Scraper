@@ -4,7 +4,7 @@
 
 import R from 'ramda';
 
-import { scrapeFromWebsite, getHTMLFromScrape, writeInCSVFile, readFromCSVFile } from "./Scraper.js";
+import { scrapeWebsite, scrape2Html, writeInCSVFile, readFromCSVFile } from "./Scraper.js";
 
 const url = "https://m.imdb.com/title/tt5071886/?ref_=fn_al_tt_0";
 
@@ -27,12 +27,12 @@ const extractDataFromScrapedHTML = ($) => {
 }
 
 (async () => {
-        const response = await scrapeFromWebsite(url, headers, "gzip");
+        const response = await scrapeWebsite(url, headers, "gzip");
         // y(response);
-        const $ = getHTMLFromScrape(response);
+        const $ = scrape2Html(response);
         const imdbData = extractDataFromScrapedHTML($);
-        writeInCSVFile("./imdbdata2.csv")(imdbData);
-        readFromCSVFile("./imdbdata2.csv");
+        writeInCSVFile("./imdbdata.csv")(imdbData);
+        readFromCSVFile("./imdbdata.csv");
 }
 )();
 // const x = R.pipe(
