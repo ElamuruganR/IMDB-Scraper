@@ -1,6 +1,5 @@
 // implement typescript
 // implement Pipe function
-// seperate into modules
 
 import R from 'ramda';
 
@@ -13,6 +12,8 @@ const headers = {
     "accept-encoding": "gzip, deflate, br",
     "accept-language": "en-GB,en-US;q=0.9,en;q=0.8"
 };
+
+const contentType = "gzip";
 
 const extractDataFromScrapedHTML = ($) => {
     let imdbData = [];
@@ -27,37 +28,14 @@ const extractDataFromScrapedHTML = ($) => {
 }
 
 (async () => {
-        const response = await scrapeWebsite(url, headers, "gzip");
-        // y(response);
-        const $ = scrape2Html(response);
-        const imdbData = extractDataFromScrapedHTML($);
-        writeInCSVFile("./imdbdata.csv")(imdbData);
-        readFromCSVFile("./imdbdata.csv");
-}
-)();
-// const x = R.pipe(
-//                 extractDataFromResponse,
-//                 writeInCSVFile("./imdbdataasync.csv"),
-//                 readFromCSVFile("./imdbdataasync.csv")
-//             );
-//             (async () => {
-//                 x(await scrapeFromWebsite(url, headers, "gzip"));
-//             })()
-
-// const x = R.pipe(
-//   getHTMLFromResponse,
-//   extractDataFromHTML,
-//   writeInCSVFile("./imdbdataasync5.csv")
-// );
-// const y = R.pipe(
-//     x,
-//     readFromCSVFile("./imdbdataasync5.csv")
-// );
-
-
-
-
-
+    const response = await scrapeWebsite(headers)(contentType)(url);
+    R.pipe(
+        scrape2Html,
+        extractDataFromScrapedHTML,
+        writeInCSVFile("./imdbdata.csv")
+    )(response);
+    readFromCSVFile("./imdbdata.csv");
+})()
 
 //========================================================================================================================================================================================
 // const movie = "https://www.mxplayer.in/movie-videos/tamil-movies";

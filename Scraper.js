@@ -1,37 +1,59 @@
 import request from "request-promise";
 import cheerio from "cheerio";
 import fs from "fs";
-import {Parser as json2Csv} from "json2csv";
-import csvP from "csv-parser";
+import {Parser as json2CsvParser} from "json2csv";
+import csvParser from "csv-parser";
 
 // Pure functions:
-const scrapeWebsite = async (uri, headers={}, contentType="json") => {
-    const response = await request(
-        {
-            uri: uri,
-            headers: headers,
-            [contentType]: true
-        });
-        return response;
+// const scrapeWebsite = async (uri, headers={}, contentType="json") => {
+//             const response = await request(
+//                 {
+//                     uri: uri,
+//                     headers: headers,
+//                     [contentType]: true
+//                 });
+//             return response;
+// }
+
+const scrapeWebsite = (headers={}) => {
+    return  (contentType="json") => {
+        return async (uri) => {
+            const response = await request(
+                {
+                    uri: uri,
+                    headers: headers,
+                    [contentType]: true
+                });
+            return response;
+        }
+    }
 }
 
-const scrape2Html = (response) => {
-    let $ = cheerio.load(response);
+const scrape2Html = (scrapedCode) => {
+    let $ = cheerio.load(scrapedCode);
     return $;
 }
 
-const writeInCSVFile = (file) => {
+const writeInCSVFile = (filePath, charEncoding="utf-8") => {
     return (data) => {
-        let j2cp = new json2Csv();
-        let csv = j2cp.parse(data);
-        // fs.writeFileSync(file, csv, 'utf-8');
-        fs.writeFile(file , csv, "utf-8", err => { if (err) console.log("err:", err) })
+        let j2cp = new json2CsvParser();
+        let csvData = j2cp.parse(data);
+        // fs.writeFileSync(filePath, csv, charEncoding);
+        fs.writeFile(
+            filePath , 
+            csvData, 
+            charEncoding, 
+            err => { 
+                if (err) console.log("err:", err) 
+                else console.log("CSV file is Written successfully")
+            }
+        )
     }
 }
 
 const readFromCSVFile = (file) => {
     fs.createReadStream(file)
-        .pipe(csvP())
+        .pipe(csvParser())
         .on("data", data => console.log(data))
 }
 
