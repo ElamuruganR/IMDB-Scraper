@@ -1,6 +1,3 @@
-// implement typescript
-// implement Pipe function
-
 import R from 'ramda';
 
 import { scrapeWebsite, scrape2Html, writeInCSVFile, readFromCSVFile } from "./Scraper.js";

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,6 +12,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.10",
     "csv-parser": "^3.0.0",
+    "fluture": "^14.0.0",
     "json2csv": "^5.0.6",
     "ramda": "^0.27.1",
     "request": "^2.88.2",
